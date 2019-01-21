@@ -11,6 +11,9 @@ var mainState = {
 
         // Load the pipe sprite
         game.load.image('pipe', 'assets/pipe.png');
+
+        // Load the jumping sound
+        game.load.audio('jump', 'assets/jump.wav');
     },
 
     create: function () {
@@ -45,9 +48,13 @@ var mainState = {
         // Add a timer in the `create()` function
         this.timer = game.time.events.loop(1500, this.addRowOfPipes, this);
 
+        // Add the score label on the left corner of the user interface
         this.score = 0;
         this.labelScore = game.add.text(20, 20, "0",
             { font: "30px Arial", fill: "#ffffff"});
+
+        // add the sound in the game
+        this.jumpSound = game.add.audio('jump');
     },
 
     update: function () {
@@ -76,6 +83,9 @@ var mainState = {
         this.bird.body.velocity.y = -350;
 
         game.add.tween(this.bird).to({angle: -20}, 100).start();
+
+        // Play the sound effect
+        this.jumpSound.play();
     },
 
     // Restart the game
