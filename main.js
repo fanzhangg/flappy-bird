@@ -24,13 +24,16 @@ let width = INNER_WIDTH * PIXEL_RATIO;
 // `var` defines a variable globally, or locally to an entire function regardless of block scope
 const INNER_HEIGHT = window.innerHeight;
 const CLIENT_HEIGHT = document.documentElement.clientHeight;
-let height = INNER_HEIGHT * PIXEL_RATIO;
+let height = INNER_WIDTH * PIXEL_RATIO;
 
-// if (height > 800) {
-//     let ratio = height / 800;
-//     width = width / ratio;
-//     height = 800;
-// }
+ if (height > 750) {
+     width = 500;
+     height = 750;
+     var game = new Phaser.Game(width, height, Phaser.AUTO, 'screen')
+ }
+ else {
+     var game = new Phaser.Game('100%', '100%', Phaser.AUTO, 'screen');
+ }
 
 const SCALE_RATIO = window.devicePixelRatio;
 
@@ -38,10 +41,6 @@ const SCALE_RATIO = window.devicePixelRatio;
 const ROTATE_DEGREE = 10;
 const PIPE_HEIGHT = 600;
 const GAP = 150;
-
-
-// Initialize parser, and create a width by height game
-var game = new Phaser.Game(width, height, Phaser.AUTO, 'screen');
 
 // Create the mainState that will contain the game
 const mainState = {
