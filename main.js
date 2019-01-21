@@ -15,7 +15,7 @@
 // some devices have a higher Device Pixel Ratio
 // actual resolution = logical resolution * DPR
 // reference: https://www.joshmorony.com/how-to-scale-a-game-for-all-device-sizes-in-phaser/
-const PIXEL_RATIO = Math.abs(window.devicePixelRatio);
+const PIXEL_RATIO = window.devicePixelRatio;
 const INNER_WIDTH = window.innerWidth;
 const CLIENT_WIDTH = document.documentElement.clientWidth;
 let width = INNER_WIDTH * PIXEL_RATIO;
