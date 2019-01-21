@@ -21,6 +21,9 @@ let WIDTH = window.innerWidth * window.devicePixelRatio;
 
 let HEIGHT = window.innerHeight * window.devicePixelRatio;
 
+const SCALE_RATIO = window.devicePixelRatio / 3;
+
+
 const ROTATE_DEGREE = 10;
 const PIPE_HEIGHT = 600;
 const GAP = 150;
@@ -51,13 +54,14 @@ const mainState = {
         // Set the physics fileSystem
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
-        // Display the bird at the position x=100 and y=245
-        let birdX = WIDTH / 2 - 25;
-        let birdY = HEIGHT / 2 - 25;
-        this.bird = game.add.sprite(birdX, birdY, 'bird');
+        // Display the bird at the center of the screen
+        //let birdX = WIDTH / 2 - 25;
+        //let birdY = HEIGHT / 2 - 25;
+        this.bird = game.add.sprite(50, 50, 'bird');
+        this.bird.scale(SCALE_RATIO, SCALE_RATIO);
 
         // Change the anchor to the left and downward
-        this.bird.anchor.setTo(-0.2, 0.5);
+        this.bird.anchor.setTo(0.5, 0.5);
 
         // Add physics to the Bird
         // Needed for: movements, gravity, collisions, etc.
@@ -126,20 +130,21 @@ const mainState = {
 
     addOnePipe: function (x, y) {
         // Create a pipe at the position x and y
-        const PIPE = game.add.sprite(x, y, 'pipe');
+        let pipe = game.add.sprite(x, y, 'pipe');
+        pipe.scale(SCALE_RATIO, SCALE_RATIO);
 
         // Add the pipe to our previously created group
-        this.pipes.add(PIPE);
+        this.pipes.add(pipe);
 
         // Enable physics on the pipe
-        game.physics.arcade.enable(PIPE);
+        game.physics.arcade.enable(pipe);
 
         // Add velocity to the pipe to make it move left
-        PIPE.body.velocity.x = -200;
+        pipe.body.velocity.x = -200;
 
         // Automatically kill the pipe when it's no longer visible
-        PIPE.checkWorldBounds = true;
-        PIPE.outOfBoundsKill = true;
+        pipe.checkWorldBounds = true;
+        pipe.outOfBoundsKill = true;
     },
 
     addRowOfPipes: function () {
