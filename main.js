@@ -18,13 +18,8 @@
 let WIDTH = Math.max(document.documentElement.clientWidth, window.innerWidth || 0) * window.devicePixelRatio;
 // `let` allows you to declare variables that are limited in scope to the block, statement, or expression on which is used
 // `var` defines a variable globally, or locally to an entire function regardless of block scope
-if (WIDTH > 600) {
-    WIDTH = 600;
-}
+
 let HEIGHT = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) * window.devicePixelRatio;
-if (HEIGHT > 800) {
-    HEIGHT = 800;
-}
 
 const ROTATE_DEGREE = 10;
 const PIPE_HEIGHT = 600;
@@ -32,7 +27,7 @@ const GAP = 150;
 
 
 // Initialize parser, and create a WIDTH by HEIGHT game
-var game = new Phaser.Game(WIDTH, HEIGHT);
+var game = new Phaser.Game(WIDTH, HEIGHT, Phaser.CANVAS, 'gameArea');
 
 // Create the mainState that will contain the game
 const mainState = {
