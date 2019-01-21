@@ -18,13 +18,13 @@
 const PIXEL_RATIO = window.devicePixelRatio;
 const INNER_WIDTH = window.innerWidth;
 const CLIENT_WIDTH = document.documentElement.clientWidth;
-const WIDTH = INNER_WIDTH;
+const WIDTH = INNER_WIDTH / PIXEL_RATIO;
 // `let` allows you to declare variables that are limited in scope to the block, statement, or expression on which is used
 // `let` allows you to declare variables that are limited in scope to the block, statement, or expression on which is used
 // `var` defines a variable globally, or locally to an entire function regardless of block scope
 const INNER_HEIGHT = window.innerHeight;
 const CLIENT_HEIGHT = document.documentElement.clientHeight;
-const HEIGHT = INNER_HEIGHT;
+const HEIGHT = INNER_HEIGHT / PIXEL_RATIO;
 
 const SCALE_RATIO = window.devicePixelRatio;
 
