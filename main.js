@@ -15,16 +15,22 @@
 // some devices have a higher Device Pixel Ratio
 // actual resolution = logical resolution * DPR
 // reference: https://www.joshmorony.com/how-to-scale-a-game-for-all-device-sizes-in-phaser/
-const PIXEL_RATIO = window.devicePixelRatio;
+const PIXEL_RATIO = Math.abs(window.devicePixelRatio);
 const INNER_WIDTH = window.innerWidth;
 const CLIENT_WIDTH = document.documentElement.clientWidth;
-const WIDTH = INNER_WIDTH / PIXEL_RATIO;
+let width = INNER_WIDTH * PIXEL_RATIO;
 // `let` allows you to declare variables that are limited in scope to the block, statement, or expression on which is used
 // `let` allows you to declare variables that are limited in scope to the block, statement, or expression on which is used
 // `var` defines a variable globally, or locally to an entire function regardless of block scope
 const INNER_HEIGHT = window.innerHeight;
 const CLIENT_HEIGHT = document.documentElement.clientHeight;
-const HEIGHT = INNER_HEIGHT / PIXEL_RATIO;
+let height = INNER_HEIGHT * PIXEL_RATIO;
+
+if (height > 800) {
+    let ratio = height / 800;
+    width = width / ratio;
+    height = 800;
+}
 
 const SCALE_RATIO = window.devicePixelRatio;
 
@@ -34,8 +40,8 @@ const PIPE_HEIGHT = 600;
 const GAP = 150;
 
 
-// Initialize parser, and create a WIDTH by HEIGHT game
-var game = new Phaser.Game(WIDTH, HEIGHT, Phaser.CANVAS, 'gameArea');
+// Initialize parser, and create a width by height game
+var game = new Phaser.Game(width, height, Phaser.AUTO, 'screen');
 
 // Create the mainState that will contain the game
 const mainState = {
@@ -60,10 +66,10 @@ const mainState = {
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
         // Display the bird at the center of the screen
-        let birdX = WIDTH / 2 - 25;
-        let birdY = HEIGHT / 2 - 25;
+        let birdX = width / 2 - 25;
+        let birdY = height / 2 - 25;
         this.bird = game.add.sprite(birdX, birdY, 'bird');
-        this.bird.scale.setTo(SCALE_RATIO, SCALE_RATIO);
+        // this.bird.scale.setTo(SCALE_RATIO, SCALE_RATIO);
 
         // Change the anchor to the left and downward
         this.bird.anchor.setTo(-0.2, 0.5);
@@ -103,7 +109,7 @@ const mainState = {
         // Call the 'restartGame' function
         game.physics.arcade.overlap(
             this.bird, this.pipes, this.hitPipe, null, this);
-        if (this.bird.y < 0 || this.bird.y > HEIGHT)
+        if (this.bird.y < 0 || this.bird.y > height)
             this.restartGame();
 
         // Rotates downwards 1 degree per time up to a certain degree
@@ -136,7 +142,7 @@ const mainState = {
     addOnePipe: function (x, y) {
         // Create a pipe at the position x and y
         let pipe = game.add.sprite(x, y, 'pipe');
-        pipe.scale.setTo(SCALE_RATIO, SCALE_RATIO);
+        // pipe.scale.setTo(SCALE_RATIO, SCALE_RATIO);
 
         // Add the pipe to our previously created group
         this.pipes.add(pipe);
@@ -153,15 +159,15 @@ const mainState = {
     },
 
     addRowOfPipes: function () {
-        // Randomly pick a number between GAP and HEIGHT - 50
+        // Randomly pick a number between GAP and height - 50
         // This will be the x position of the bottom pipe
-        const bottomX = Math.ceil(Math.random() * (HEIGHT - GAP - 100) + GAP + 50);
+        const bottomX = Math.ceil(Math.random() * (height - GAP - 100) + GAP + 50);
 
         // Add the bottom pipe
-        this.addOnePipe(WIDTH, bottomX);
+        this.addOnePipe(width, bottomX);
 
         // Add the top pipe
-        this.addOnePipe(WIDTH, bottomX - GAP - PIPE_HEIGHT);
+        this.addOnePipe(width, bottomX - GAP - PIPE_HEIGHT);
 
         // Increase the score by 1 each time a new pip is created
         this.score += 1;
