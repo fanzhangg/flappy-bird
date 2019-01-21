@@ -1,9 +1,34 @@
-const WIDTH = 400;
-const HEIGHT = 490;
-const ROTATE_DEGREE = 20;
+//`window.innerWidth`: get CSS viewport (a window on the screen) `@media (width) which includes scroll bars
+// - mobile values may be wrongly scaled down to the visual viewport and be smaller
+// - zoom may cause values to be 1px of due to native rounding
+// - `undefined` in IE8
+// `document.documentElement.clientWidth
+// - = CSS viewport width minus scrollbar width
+// - = @media (width) when there is no scrollbar
+// - = `jQuery(window).width()` which jQuery calls the browser viewport
+// - available cross-browser
+// inaccurate if doc type is missing
+let WIDTH = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+// `let` allows you to declare variables that are limited in scope to the block, statement, or expression on which is used
+// `var` defines a variable globally, or locally to an entire function regardless of block scope
+if (WIDTH > 400) {
+    WIDTH = 400;
+}
+let HEIGHT = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+if (HEIGHT > 600) {
+    HEIGHT = 600;
+}
+
+const ROTATE_DEGREE = 10;
+const PIPE_HEIGHT = 600;
+const GAP = 150;
+
+
+// Initialize parser, and create a WIDTH by HEIGHT game
+var game = new Phaser.Game(WIDTH, HEIGHT);
 
 // Create the mainState that will contain the game
-var mainState = {
+const mainState = {
     preload: function () {
         // This function will be excuted at the beginning
         // Load the image and sounds
@@ -25,7 +50,9 @@ var mainState = {
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
         // Display the bird at the position x=100 and y=245
-        this.bird = game.add.sprite(100, 245, 'bird');
+        let birdX = WIDTH / 2 - 25;
+        let birdY = HEIGHT / 2 - 25;
+        this.bird = game.add.sprite(birdX, birdY, 'bird');
 
         // Change the anchor to the left and downward
         this.bird.anchor.setTo(-0.2, 0.5);
@@ -37,10 +64,10 @@ var mainState = {
         // Add gravity to the bird to make this fall
         this.bird.body.gravity.y = 1000;
 
-        // Call the 'jump' function when the spacekey is hit
-        var spaceKey = game.input.keyboard.addKey(
+        // Call the 'jump' function when the space key is hit
+        const SPACE_KEY = game.input.keyboard.addKey(
             Phaser.Keyboard.SPACEBAR);
-        spaceKey.onDown.add(this.jump, this);
+        SPACE_KEY.onDown.add(this.jump, this);
         // Create an empty group
         this.pipes = game.add.group();
 
@@ -51,7 +78,7 @@ var mainState = {
         // Add the score label on the left corner of the user interface
         this.score = 0;
         this.labelScore = game.add.text(20, 20, "0",
-            { font: "30px Arial", fill: "#ffffff"});
+            {font: "30px Arial", fill: "#ffffff"});
 
         // add the sound in the game
         this.jumpSound = game.add.audio('jump');
@@ -94,40 +121,42 @@ var mainState = {
         game.state.start('main');
     },
 
+
     addOnePipe: function (x, y) {
         // Create a pipe at the position x and y
-        var pipe = game.add.sprite(x, y, 'pipe');
+        const PIPE = game.add.sprite(x, y, 'pipe');
 
         // Add the pipe to our previously created group
-        this.pipes.add(pipe);
+        this.pipes.add(PIPE);
 
         // Enable physics on the pipe
-        game.physics.arcade.enable(pipe);
+        game.physics.arcade.enable(PIPE);
 
         // Add velocity to the pipe to make it move left
-        pipe.body.velocity.x = -200;
+        PIPE.body.velocity.x = -200;
 
         // Automatically kill the pipe when it's no longer visible
-        pipe.checkWorldBounds = true;
-        pipe.outOfBoundsKill = true;
+        PIPE.checkWorldBounds = true;
+        PIPE.outOfBoundsKill = true;
     },
 
     addRowOfPipes: function () {
-        // Randomly pick a number between 1 and 5
-        // This will be the hole position
-        var hole = Math.floor(Math.random() * 5) + 1;
+        // Randomly pick a number between GAP and HEIGHT - 50
+        // This will be the x position of the bottom pipe
+        const bottomX = Math.ceil(Math.random() * (HEIGHT - GAP - 100) + GAP + 50);
 
-        // Add the 6 pipes
-        // With one big hole at position 'hole' and 'hole + 1'
-        for (var i = 0; i < 8; i++)
-            if (i !== hole && i !== hole + 1)
-                this.addOnePipe(400, i * 60 + 10);
+        // Add the bottom pipe
+        this.addOnePipe(WIDTH, bottomX);
+
+        // Add the top pipe
+        this.addOnePipe(WIDTH, bottomX - GAP - PIPE_HEIGHT);
+
         // Increase the score by 1 each time a new pip is created
         this.score += 1;
         this.labelScore.text = this.score;
     },
 
-    hitPipe: function() {
+    hitPipe: function () {
         // If the bird has already hit a pipe, do nothing
         // The bird is already falling off the screen
         if (!this.bird.alive)
@@ -140,14 +169,11 @@ var mainState = {
         game.time.events.remove(this.timer);
 
         // Go through all the pipes, and stop their movement
-        this.pipes.forEach(function(p) {
+        this.pipes.forEach(function (p) {
             p.body.velocity.x = 0;
         }, this);
     }
 };
-
-// Initialize parser, and create a WIDTH by HEIGHT game
-var game = new Phaser.Game(WIDTH, HEIGHT);
 
 // Add the 'mainState' and call it 'main'
 game.state.add('main', mainState);
