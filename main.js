@@ -1,22 +1,29 @@
-//`window.innerWidth`: get CSS viewport (a window on the screen) `@media (width) which includes scroll bars
+//`window.innerWidth`
+// - get CSS viewport (a window on the screen) `@media (width) which includes scroll bars
 // - mobile values may be wrongly scaled down to the visual viewport and be smaller
 // - zoom may cause values to be 1px of due to native rounding
 // - `undefined` in IE8
+// - logical resolution
 // `document.documentElement.clientWidth
 // - = CSS viewport width minus scrollbar width
 // - = @media (width) when there is no scrollbar
 // - = `jQuery(window).width()` which jQuery calls the browser viewport
 // - available cross-browser
-// inaccurate if doc type is missing
-let WIDTH = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+// - inaccurate if doc type is missing
+// reference: https://stackoverflow.com/questions/1248081/get-the-browser-viewport-dimensions-with-javascript
+
+// some devices have a higher Device Pixel Ratio
+// actual resolution = logical resolution * DPR
+// reference: https://www.joshmorony.com/how-to-scale-a-game-for-all-device-sizes-in-phaser/
+let WIDTH = Math.max(document.documentElement.clientWidth, window.innerWidth || 0) * window.devicePixelRatio;
 // `let` allows you to declare variables that are limited in scope to the block, statement, or expression on which is used
 // `var` defines a variable globally, or locally to an entire function regardless of block scope
-if (WIDTH > 400) {
-    WIDTH = 400;
+if (WIDTH > 600) {
+    WIDTH = 600;
 }
-let HEIGHT = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-if (HEIGHT > 600) {
-    HEIGHT = 600;
+let HEIGHT = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) * window.devicePixelRatio;
+if (HEIGHT > 800) {
+    HEIGHT = 800;
 }
 
 const ROTATE_DEGREE = 10;
