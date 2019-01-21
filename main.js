@@ -1,5 +1,6 @@
 const WIDTH = 400;
 const HEIGHT = 490;
+const ROTATE_DEGREE = 20;
 
 // Create the mainState that will contain the game
 var mainState = {
@@ -22,6 +23,9 @@ var mainState = {
 
         // Display the bird at the position x=100 and y=245
         this.bird = game.add.sprite(100, 245, 'bird');
+
+        // Change the anchor to the left and downward
+        this.bird.anchor.setTo(-0.2, 0.5);
 
         // Add physics to the Bird
         // Needed for: movements, gravity, collisions, etc.
@@ -53,15 +57,25 @@ var mainState = {
         // If the bird is out of the screen (too high or too low)
         // Call the 'restartGame' function
         game.physics.arcade.overlap(
-            this.bird, this.pipes, this.restartGame, null, this);
+            this.bird, this.pipes, this.hitPipe, null, this);
         if (this.bird.y < 0 || this.bird.y > HEIGHT)
             this.restartGame();
+
+        // Rotates downwards 1 degree per time up to a certain degree
+        if (this.bird.angle < ROTATE_DEGREE)
+            this.bird.angle += 1;
     },
 
     // Make the bird jump
     jump: function () {
-        // add a vertical velocity to the bird
+        // Stop the bird from jumping when it is dead
+        if (!this.bird.alive)
+            return null;
+
+        // Add a vertical velocity to the bird
         this.bird.body.velocity.y = -350;
+
+        game.add.tween(this.bird).to({angle: -20}, 100).start();
     },
 
     // Restart the game
@@ -102,6 +116,24 @@ var mainState = {
         this.score += 1;
         this.labelScore.text = this.score;
     },
+
+    hitPipe: function() {
+        // If the bird has already hit a pipe, do nothing
+        // The bird is already falling off the screen
+        if (!this.bird.alive)
+            return null;
+
+        // Set the alive property of the bird to false
+        this.bird.alive = false;
+
+        // Prevent new pipe from appearing
+        game.time.events.remove(this.timer);
+
+        // Go through all the pipes, and stop their movement
+        this.pipes.forEach(function(p) {
+            p.body.velocity.x = 0;
+        }, this);
+    }
 };
 
 // Initialize parser, and create a WIDTH by HEIGHT game
