@@ -26,11 +26,11 @@ const INNER_HEIGHT = window.innerHeight;
 const CLIENT_HEIGHT = document.documentElement.clientHeight;
 let height = INNER_HEIGHT * PIXEL_RATIO;
 
-if (height > 800) {
-    let ratio = height / 800;
-    width = width / ratio;
-    height = 800;
-}
+// if (height > 800) {
+//     let ratio = height / 800;
+//     width = width / ratio;
+//     height = 800;
+// }
 
 const SCALE_RATIO = window.devicePixelRatio;
 
