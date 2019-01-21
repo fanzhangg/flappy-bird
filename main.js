@@ -15,11 +15,16 @@
 // some devices have a higher Device Pixel Ratio
 // actual resolution = logical resolution * DPR
 // reference: https://www.joshmorony.com/how-to-scale-a-game-for-all-device-sizes-in-phaser/
-let WIDTH = window.innerWidth * window.devicePixelRatio;
+const PIXEL_RATIO = window.devicePixelRatio;
+const INNER_WIDTH = window.innerWidth;
+const CLIENT_WIDTH = document.documentElement.clientWidth;
+const WIDTH = INNER_WIDTH * PIXEL_RATIO;
+// `let` allows you to declare variables that are limited in scope to the block, statement, or expression on which is used
 // `let` allows you to declare variables that are limited in scope to the block, statement, or expression on which is used
 // `var` defines a variable globally, or locally to an entire function regardless of block scope
-
-let HEIGHT = window.innerHeight * window.devicePixelRatio;
+const INNER_HEIGHT = window.innerHeight;
+const CLIENT_HEIGHT = document.documentElement.clientHeight;
+const HEIGHT = INNER_HEIGHT * PIXEL_RATIO;
 
 const SCALE_RATIO = window.devicePixelRatio / 3;
 
@@ -55,13 +60,13 @@ const mainState = {
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
         // Display the bird at the center of the screen
-        //let birdX = WIDTH / 2 - 25;
-        //let birdY = HEIGHT / 2 - 25;
-        this.bird = game.add.sprite(50, 50, 'bird');
-        this.bird.scale(SCALE_RATIO, SCALE_RATIO);
+        let birdX = WIDTH / 2 - 25;
+        let birdY = HEIGHT / 2 - 25;
+        this.bird = game.add.sprite(birdX, birdY, 'bird');
+        this.bird.scale.setTo(SCALE_RATIO, SCALE_RATIO);
 
         // Change the anchor to the left and downward
-        this.bird.anchor.setTo(0.5, 0.5);
+        this.bird.anchor.setTo(-0.2, 0.5);
 
         // Add physics to the Bird
         // Needed for: movements, gravity, collisions, etc.
@@ -131,7 +136,7 @@ const mainState = {
     addOnePipe: function (x, y) {
         // Create a pipe at the position x and y
         let pipe = game.add.sprite(x, y, 'pipe');
-        pipe.scale(SCALE_RATIO, SCALE_RATIO);
+        pipe.scale.setTo(SCALE_RATIO, SCALE_RATIO);
 
         // Add the pipe to our previously created group
         this.pipes.add(pipe);
