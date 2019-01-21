@@ -15,11 +15,11 @@
 // some devices have a higher Device Pixel Ratio
 // actual resolution = logical resolution * DPR
 // reference: https://www.joshmorony.com/how-to-scale-a-game-for-all-device-sizes-in-phaser/
-let WIDTH = Math.max(document.documentElement.clientWidth, window.innerWidth || 0) * window.devicePixelRatio;
+let WIDTH = window.innerWidth * window.devicePixelRatio;
 // `let` allows you to declare variables that are limited in scope to the block, statement, or expression on which is used
 // `var` defines a variable globally, or locally to an entire function regardless of block scope
 
-let HEIGHT = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) * window.devicePixelRatio;
+let HEIGHT = window.innerHeight * window.devicePixelRatio;
 
 const ROTATE_DEGREE = 10;
 const PIPE_HEIGHT = 600;
