@@ -18,24 +18,25 @@
 const PIXEL_RATIO = window.devicePixelRatio;
 const INNER_WIDTH = window.innerWidth;
 const CLIENT_WIDTH = document.documentElement.clientWidth;
-let width = INNER_WIDTH * PIXEL_RATIO;
 // `let` allows you to declare variables that are limited in scope to the block, statement, or expression on which is used
 // `let` allows you to declare variables that are limited in scope to the block, statement, or expression on which is used
 // `var` defines a variable globally, or locally to an entire function regardless of block scope
 const INNER_HEIGHT = window.innerHeight;
 const CLIENT_HEIGHT = document.documentElement.clientHeight;
-let height = INNER_WIDTH * PIXEL_RATIO;
 
- if (height > 750) {
-     width = 500;
-     height = 750;
-     var game = new Phaser.Game(width, height, Phaser.AUTO, 'screen')
- }
- else {
-     var game = new Phaser.Game('100%', '100%', Phaser.AUTO, 'screen');
- }
+let height = INNER_HEIGHT * PIXEL_RATIO;
+let width = INNER_WIDTH * PIXEL_RATIO;
 
-const SCALE_RATIO = window.devicePixelRatio;
+if (height < width) {
+    width = 400;
+    height = 600;
+}
+
+
+var game = new Phaser.Game(width, height, Phaser.CANVAS, 'screen');
+
+
+const SCALE_RATIO = window.devicePixelRatio / 3;
 
 
 const ROTATE_DEGREE = 10;
