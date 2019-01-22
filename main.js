@@ -69,7 +69,7 @@ const mainState = {
         let birdX = width / 2 - 25;
         let birdY = height / 2 - 25;
         this.bird = game.add.sprite(birdX, birdY, 'bird');
-        // this.bird.scale.setTo(SCALE_RATIO, SCALE_RATIO);
+        this.bird.scale.setTo(SCALE_RATIO, SCALE_RATIO);
 
         // Change the anchor to the left and downward
         this.bird.anchor.setTo(-0.2, 0.5);
@@ -142,7 +142,7 @@ const mainState = {
     addOnePipe: function (x, y) {
         // Create a pipe at the position x and y
         let pipe = game.add.sprite(x, y, 'pipe');
-        // pipe.scale.setTo(SCALE_RATIO, SCALE_RATIO);
+        pipe.scale.setTo(SCALE_RATIO, SCALE_RATIO);
 
         // Add the pipe to our previously created group
         this.pipes.add(pipe);
