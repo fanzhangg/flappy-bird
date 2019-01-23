@@ -24,16 +24,17 @@ const CLIENT_WIDTH = document.documentElement.clientWidth;
 const INNER_HEIGHT = window.innerHeight;
 const CLIENT_HEIGHT = document.documentElement.clientHeight;
 
-let height = INNER_HEIGHT * PIXEL_RATIO;
-let width = INNER_WIDTH * PIXEL_RATIO;
+let height = INNER_HEIGHT * PIXEL_RATIO,
+    width = INNER_WIDTH * PIXEL_RATIO;
 
 if (height < width) {
     width = 400;
     height = 600;
+    var game = new Phaser.Game(width, height, Phaser.CANVAS, 'screen');
 }
-
-
-var game = new Phaser.Game(width, height, Phaser.CANVAS, 'screen');
+else {
+    game = new Phaser.Game('100%', '100%', Phaser.AUTO, 'screen');
+}
 
 
 const SCALE_RATIO = PIXEL_RATIO / 3;
